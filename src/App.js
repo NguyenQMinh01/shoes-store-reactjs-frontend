@@ -63,6 +63,8 @@ function App() {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
+
 
   useEffect(() => {
     axios
@@ -104,6 +106,22 @@ function App() {
 
   if (!isLoggedIn) {
     return <LoginForm onLoginSuccess={handleLoginSuccess} />;
+  }
+
+  function handleRegisterSuccess() {
+    setIsRegistered(true);
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div>
+        {!isRegistered ? (
+          <RegisterForm onRegisterSuccess={handleRegisterSuccess} />
+        ) : (
+          <LoginForm onLoginSuccess={handleLoginSuccess} />
+        )}
+      </div>
+    );
   }
 
   return (
