@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import bcrypt from "bcryptjs";
+
 
 function RegisterForm() {
   const [username, setUsername] = useState("");
@@ -9,11 +11,12 @@ function RegisterForm() {
   const [error, setError] = useState("");
 
   const handleRegister = async (event) => {
+    const passwordHash = await bcrypt.hash(password, 10);
     event.preventDefault();
     const data = {
       username: username,                   // Thêm trường 'username'
       email: email,
-      password: password,
+      password: passwordHash,
       password_confirmation: passwordConfirmation,
     };
 
@@ -38,7 +41,7 @@ function RegisterForm() {
       {error && <p>{error}</p>}
       <h2>Create an account</h2>
       <label>Username:</label>
-      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />   
+      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
       <label>Email:</label>
       <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
       <br />
